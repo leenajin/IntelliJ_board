@@ -16,31 +16,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
-@Controller //@를 annotation이라고 한다. spring이 여기가 controller라는 것을 인식하도록 해줌
+@Controller
 public class BoardController {
+
 
     @Autowired
     private BoardService boardService;
 
-    @GetMapping("/board/write")
-    public String boardWriteForm(){
+    @GetMapping("/board/write") //localhost:8090/board/write
+    public String boardWriteForm() {
 
         return "boardwrite";
     }
 
-    @PostMapping("/board/writepro") //데이터가 전송될 주소
-    public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception{ //
+    @PostMapping("/board/writepro")
+    public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception{
 
         boardService.write(board, file);
 
-            model.addAttribute("message", "글 작성이 완료되었습니다.");
-
+        model.addAttribute("message", "글 작성이 완료되었습니다.");
         model.addAttribute("searchUrl", "/board/list");
 
         return "message";
     }
 
-    @GetMapping("/board/list") //페이징 처리하기
+    @GetMapping("/board/list")
     public String boardList(Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             String searchKeyword) {
@@ -57,7 +57,7 @@ public class BoardController {
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, list.getTotalPages());
 
-        model.addAttribute("list", boardService.boardList(pageable));
+        model.addAttribute("list", list);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
@@ -65,23 +65,16 @@ public class BoardController {
         return "boardlist";
     }
 
-    @GetMapping("/board/view") //localhost:8080/board/view?id=1
-    public String boardView(Model model, Integer id){
+    @GetMapping("/board/view") // localhost:8080/board/view?id=1
+    public String boardView(Model model, Integer id) {
 
         model.addAttribute("board", boardService.boardView(id));
         return "boardview";
     }
 
-    @GetMapping("/board/delete")
-    public String boardDelete(Integer id){
-
-        boardService.boardDelete(id);
-
-        return "redirect:/board/list";
-    }
-
     @GetMapping("/board/modify/{id}")
-    public String boardModify(@PathVariable("id") Integer id, Model model){
+    public String boardModify(@PathVariable("id") Integer id,
+                              Model model) {
 
         model.addAttribute("board", boardService.boardView(id));
 
@@ -89,7 +82,7 @@ public class BoardController {
     }
 
     @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Board board, MultipartFile file) throws Exception {
+    public String boardUpdate(@PathVariable("id") Integer id, Board board, MultipartFile file) throws Exception{
 
         Board boardTemp = boardService.boardView(id);
         boardTemp.setTitle(board.getTitle());
@@ -98,5 +91,6 @@ public class BoardController {
         boardService.write(boardTemp, file);
 
         return "redirect:/board/list";
+
     }
 }

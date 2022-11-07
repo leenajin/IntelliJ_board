@@ -20,14 +20,14 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
-    //글 작성 처리
+    // 글 작성 처리
     public void write(Board board, MultipartFile file) throws Exception{
 
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
 
-        UUID uuid = UUID.randomUUID(); //식별자를 랜덤으로 만들어 줄 수 있다.
+        UUID uuid = UUID.randomUUID();
 
-        String fileName = uuid + "_" + file.getOriginalFilename(); //랜덤으로 식별자가 붙은 다음에 _다음에 원래 파일 이름이 붙게 된다.
+        String fileName = uuid + "_" + file.getOriginalFilename();
 
         File saveFile = new File(projectPath, fileName);
 
@@ -39,7 +39,7 @@ public class BoardService {
         boardRepository.save(board);
     }
 
-    //게시글 리스트 처리
+    // 게시글 리스트 처리
     public Page<Board> boardList(Pageable pageable) {
 
         return boardRepository.findAll(pageable);
@@ -50,15 +50,9 @@ public class BoardService {
         return boardRepository.findByTitleContaining(searchKeyword, pageable);
     }
 
-    //게시글 불러오기
-    public Board boardView(Integer id){
+    // 특정 게시글 불러오기
+    public Board boardView(Integer id) {
 
         return boardRepository.findById(id).get();
-    }
-
-    //게시글 삭제
-    public void boardDelete(Integer id){
-
-        boardRepository.deleteById(id);
     }
 }
