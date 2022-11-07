@@ -72,6 +72,15 @@ public class BoardController {
         return "boardview";
     }
 
+
+    @GetMapping("/board/delete")
+    public String boardDelete(Integer id){
+
+        boardService.boardDelete(id);
+
+        return "redirect:/board/list";
+    }
+
     @GetMapping("/board/modify/{id}")
     public String boardModify(@PathVariable("id") Integer id,
                               Model model) {
