@@ -25,9 +25,9 @@ public class BoardService {
 
         String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files";
 
-        UUID uuid = UUID.randomUUID();
+        UUID uuid = UUID.randomUUID(); //식별자를 랜덤으로 만들어 줄 수 있다.
 
-        String fileName = uuid + "_" + file.getOriginalFilename();
+        String fileName = uuid + "_" + file.getOriginalFilename(); //랜덤으로 식별자가 붙은 다음에 _다음에 원래 파일 이름이 붙게 된다.
 
         File saveFile = new File(projectPath, fileName);
 

@@ -16,7 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
-@Controller
+@Controller //@를 annotation이라고 한다. spring이 여기가 controller라는 것을 인식하도록 해줌
 public class BoardController {
 
 
@@ -29,7 +29,7 @@ public class BoardController {
         return "boardwrite";
     }
 
-    @PostMapping("/board/writepro")
+    @PostMapping("/board/writepro") //데이터가 전송될 주소
     public String boardWritePro(Board board, Model model, MultipartFile file) throws Exception{
 
         boardService.write(board, file);
@@ -40,7 +40,7 @@ public class BoardController {
         return "message";
     }
 
-    @GetMapping("/board/list")
+    @GetMapping("/board/list")  //페이징 처리하기
     public String boardList(Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             String searchKeyword) {
@@ -70,15 +70,6 @@ public class BoardController {
 
         model.addAttribute("board", boardService.boardView(id));
         return "boardview";
-    }
-
-
-    @GetMapping("/board/delete")
-    public String boardDelete(Integer id){
-
-        boardService.boardDelete(id);
-
-        return "redirect:/board/list";
     }
 
     @GetMapping("/board/modify/{id}")
